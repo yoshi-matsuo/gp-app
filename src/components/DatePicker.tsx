@@ -34,38 +34,36 @@ export default function DatePicker({ selectedDate, onDateChange }: DatePickerPro
   const displayDate = parseDate(selectedDate);
 
   return (
-    <div className="flex flex-col items-center gap-2">
-      <div className="flex items-center gap-3">
-        <button
-          onClick={goToPrev}
-          className="w-10 h-10 flex items-center justify-center rounded-full bg-white/20 active:scale-95 transition-transform"
-        >
-          <ChevronLeft className="w-5 h-5 text-white" />
-        </button>
-        <div className="text-center min-w-[180px]">
-          <p className="text-lg font-bold text-white drop-shadow">{toJPDateString(displayDate)}</p>
-          {isToday(selectedDate) && (
-            <span className="text-xs font-semibold text-[#DF0013] bg-red-50 px-2 py-0.5 rounded-full">
-              TODAY
-            </span>
-          )}
-        </div>
-        <button
-          onClick={goToNext}
-          disabled={nextDisabled}
-          className="w-10 h-10 flex items-center justify-center rounded-full bg-white/20 active:scale-95 transition-transform disabled:opacity-30 disabled:active:scale-100"
-        >
-          <ChevronRight className="w-5 h-5 text-white" />
-        </button>
+    <div className="flex items-center justify-center gap-2">
+      <button
+        onClick={goToPrev}
+        className="w-8 h-8 flex items-center justify-center rounded-full bg-white/20 active:scale-95 transition-transform"
+      >
+        <ChevronLeft className="w-4 h-4 text-white" />
+      </button>
+      <div className="text-center min-w-[160px]">
+        <p className="text-base font-bold text-white drop-shadow">{toJPDateString(displayDate)}</p>
+        {isToday(selectedDate) && (
+          <span className="text-[10px] font-semibold text-[#DF0013] bg-red-50 px-1.5 py-0.5 rounded-full">
+            TODAY
+          </span>
+        )}
+        {!isToday(selectedDate) && (
+          <button
+            onClick={goToToday}
+            className="text-[10px] text-white/80 font-medium hover:underline"
+          >
+            今日に戻る
+          </button>
+        )}
       </div>
-      {!isToday(selectedDate) && (
-        <button
-          onClick={goToToday}
-          className="text-xs text-white/80 font-medium hover:underline"
-        >
-          今日に戻る
-        </button>
-      )}
+      <button
+        onClick={goToNext}
+        disabled={nextDisabled}
+        className="w-8 h-8 flex items-center justify-center rounded-full bg-white/20 active:scale-95 transition-transform disabled:opacity-30 disabled:active:scale-100"
+      >
+        <ChevronRight className="w-4 h-4 text-white" />
+      </button>
       <input
         type="date"
         value={selectedDate}
@@ -75,7 +73,7 @@ export default function DatePicker({ selectedDate, onDateChange }: DatePickerPro
             onDateChange(e.target.value);
           }
         }}
-        className="text-sm text-white bg-white/20 border border-white/30 rounded-lg px-3 py-1.5"
+        className="text-xs text-white bg-white/20 border border-white/30 rounded-lg px-2 py-1 ml-1"
       />
     </div>
   );

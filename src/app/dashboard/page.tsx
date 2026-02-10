@@ -40,17 +40,17 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-bg pb-20">
       {/* Header */}
-      <header className="bg-[#DF0013] text-white px-4 pt-10 pb-6">
-        <div className="flex items-center justify-center gap-2 mb-4">
-          <Image src="/logo.png" alt="Logo" width={32} height={32} />
+      <header className="bg-[#DF0013] text-white px-4 pt-6 pb-3">
+        <div className="flex items-center justify-center gap-2 mb-2">
+          <Image src="/logo.png" alt="Logo" width={64} height={64} />
           <h1 className="text-lg font-bold">Activity Tracker</h1>
         </div>
         <DatePicker selectedDate={selectedDate} onDateChange={handleDateChange} />
       </header>
 
-      <main className="max-w-lg mx-auto px-4 -mt-1">
+      <main className="max-w-lg mx-auto px-4">
         {/* Summary */}
-        <div className="mb-5 -mt-0">
+        <div className="mb-3 mt-2">
           <SummaryCard totalCalories={totalCalories} totalSteps={totalSteps} />
         </div>
 
