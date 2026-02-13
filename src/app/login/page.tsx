@@ -9,6 +9,21 @@ export default async function LoginPage({
 }) {
   const { error } = await searchParams;
 
+  const errorMap: { [key: string]: string } = {
+    "Invalid login credentials":
+      "メールアドレスまたはパスワードが間違っています。",
+    "Email not confirmed":
+      "メールアドレスの確認が完了していません。受信トレイを確認してください。",
+    "User already registered":
+      "すでに登録されているメールアドレスです。",
+    "Password should be at least 6 characters":
+      "パスワードは6文字以上で設定してください。",
+  };
+
+  const translatedError = error
+    ? errorMap[error] || "エラーが発生しました。もう一度お試しください。"
+    : null;
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#DF0013] to-[#8B000C] px-4">
       <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-sm text-center">
@@ -44,9 +59,9 @@ export default async function LoginPage({
             className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#DF0013] text-sm"
           />
 
-          {error && (
+          {translatedError && (
             <p className="text-red-500 text-sm bg-red-50 rounded-lg p-2">
-              {error}
+              {translatedError}
             </p>
           )}
 
