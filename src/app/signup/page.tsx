@@ -9,6 +9,18 @@ export default async function SignupPage({
 }) {
   const { error, message } = await searchParams;
 
+  const errorMap: { [key: string]: string } = {
+    "User already registered": "すでに登録されているメールアドレスです。",
+    "Password should be at least 6 characters":
+      "パスワードは6文字以上で設定してください。",
+    "Unable to validate email address: invalid format":
+      "メールアドレスの形式が正しくありません。",
+  };
+
+  const translatedError = error
+    ? errorMap[error] || error
+    : null;
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#DF0013] to-[#8B000C] px-4">
       <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-sm text-center">
@@ -43,10 +55,17 @@ export default async function SignupPage({
             minLength={6}
             className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#DF0013] text-sm"
           />
+          <input
+            type="text"
+            name="accessCode"
+            placeholder="ジム専用アクセスコード（合言葉）"
+            required
+            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#DF0013] text-sm"
+          />
 
-          {error && (
+          {translatedError && (
             <p className="text-red-500 text-sm bg-red-50 rounded-lg p-2">
-              {error}
+              {translatedError}
             </p>
           )}
           {message && (
