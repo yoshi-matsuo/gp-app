@@ -55,13 +55,6 @@ export default async function SignupPage({
             minLength={6}
             className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#DF0013] text-sm"
           />
-          <input
-            type="text"
-            name="accessCode"
-            placeholder="ジム専用アクセスコード（合言葉）"
-            required
-            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#DF0013] text-sm"
-          />
 
           {translatedError && (
             <p className="text-red-500 text-sm bg-red-50 rounded-lg p-2">

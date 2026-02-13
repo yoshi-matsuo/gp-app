@@ -19,15 +19,6 @@ export async function login(formData: FormData) {
 }
 
 export async function signup(formData: FormData) {
-  const accessCode = formData.get("accessCode") as string;
-
-  if (accessCode !== process.env.GYM_ACCESS_CODE) {
-    redirect(
-      "/signup?error=" +
-        encodeURIComponent("アクセスコードが間違っています。")
-    );
-  }
-
   const supabase = await createClient();
 
   const { error } = await supabase.auth.signUp({
