@@ -39,6 +39,10 @@ interface ChartDataItem {
   steps: number;
 }
 
+function recordCalories(r: DayRecord): number {
+  return calcTotalCalories(r.activities) + (r.freeCalories ?? 0);
+}
+
 function buildWeekData(records: DayRecord[]): ChartDataItem[] {
   const today = new Date();
   const { start } = getWeekRange(today);
@@ -48,7 +52,7 @@ function buildWeekData(records: DayRecord[]): ChartDataItem[] {
   const weekDays = ["月", "火", "水", "木", "金", "土", "日"];
   return days.map((d, i) => {
     const r = recordMap.get(d);
-    const cal = r ? calcTotalCalories(r.activities) : 0;
+    const cal = r ? recordCalories(r) : 0;
     return { label: weekDays[i] || d.slice(8), calories: cal, steps: caloriesToSteps(cal) };
   });
 }
@@ -71,7 +75,7 @@ function buildMonthData(records: DayRecord[]): ChartDataItem[] {
     let totalCal = 0;
     days.forEach((d) => {
       const r = recordMap.get(d);
-      if (r) totalCal += calcTotalCalories(r.activities);
+      if (r) totalCal += recordCalories(r);
     });
     weeks.push({
       label: `${weekNum}週`,
@@ -98,7 +102,7 @@ function buildYearData(records: DayRecord[]): ChartDataItem[] {
     let totalCal = 0;
     days.forEach((d) => {
       const r = recordMap.get(d);
-      if (r) totalCal += calcTotalCalories(r.activities);
+      if (r) totalCal += recordCalories(r);
     });
     months.push({
       label: monthLabels[m],
@@ -112,7 +116,7 @@ function buildYearData(records: DayRecord[]): ChartDataItem[] {
 function buildTotalData(records: DayRecord[]): { totalCalories: number; totalSteps: number; days: number } {
   let totalCalories = 0;
   records.forEach((r) => {
-    totalCalories += calcTotalCalories(r.activities);
+    totalCalories += recordCalories(r);
   });
   return {
     totalCalories,

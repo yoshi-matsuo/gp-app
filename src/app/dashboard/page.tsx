@@ -4,10 +4,11 @@ import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import DatePicker from "@/components/DatePicker";
 import ActivityRow from "@/components/ActivityRow";
+import FreeCaloriesInput from "@/components/FreeCaloriesInput";
 import SummaryCard from "@/components/SummaryCard";
 import BottomNav from "@/components/BottomNav";
 import { ACTIVITIES, calcTotalCalories, caloriesToSteps } from "@/lib/constants";
-import { getRecord, updateActivity } from "@/lib/storage";
+import { getRecord, updateActivity, updateFreeCalories } from "@/lib/storage";
 import { formatDate } from "@/lib/date-utils";
 import { ActivityType, DayRecord } from "@/lib/types";
 
@@ -32,9 +33,15 @@ export default function DashboardPage() {
     setRecord({ ...updated });
   };
 
+  const handleFreeCaloriesChange = (value: number) => {
+    const updated = updateFreeCalories(selectedDate, value);
+    setRecord({ ...updated });
+  };
+
   if (!record) return null;
 
-  const totalCalories = calcTotalCalories(record.activities);
+  const activityCalories = calcTotalCalories(record.activities);
+  const totalCalories = activityCalories + (record.freeCalories ?? 0);
   const totalSteps = caloriesToSteps(totalCalories);
 
   return (
@@ -58,15 +65,26 @@ export default function DashboardPage() {
         <h2 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3">
           種目別ラウンド数
         </h2>
-        <div className="space-y-2 mb-6">
+        <div className="space-y-2 mb-4">
           {ACTIVITIES.map((config) => (
             <ActivityRow
               key={config.key}
               config={config}
-              rounds={record.activities[config.key]}
+              rounds={record.activities[config.key] ?? 0}
               onChange={(rounds) => handleRoundsChange(config.key, rounds)}
             />
           ))}
+        </div>
+
+        {/* Free Calories Input */}
+        <h2 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3">
+          その他の消費カロリー
+        </h2>
+        <div className="mb-6">
+          <FreeCaloriesInput
+            value={record.freeCalories ?? 0}
+            onChange={handleFreeCaloriesChange}
+          />
         </div>
       </main>
 

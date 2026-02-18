@@ -1,10 +1,15 @@
 export type ActivityType =
   | "mitt"
+  | "mitthold"
   | "jumprope"
   | "sandbag"
   | "shadow"
-  | "bodyweight"
-  | "weighted";
+  | "weighted"
+  | "abs"
+  | "squat"
+  | "pushup"
+  | "sparring_drill"
+  | "sparring";
 
 export interface ActivityConfig {
   key: ActivityType;
@@ -16,6 +21,7 @@ export interface ActivityConfig {
 export interface DayRecord {
   date: string; // "YYYY-MM-DD"
   activities: Record<ActivityType, number>; // rounds per activity
+  freeCalories?: number; // optional free-form calorie input
 }
 
 export interface DaySummary {

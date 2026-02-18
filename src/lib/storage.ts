@@ -20,7 +20,17 @@ function saveAllRecords(records: Record<string, DayRecord>) {
 
 export function getRecord(date: string): DayRecord {
   const records = getAllRecords();
-  return records[date] ?? { date, activities: { ...DEFAULT_ROUNDS } };
+  const stored = records[date];
+  if (!stored) {
+    return { date, activities: { ...DEFAULT_ROUNDS }, freeCalories: 0 };
+  }
+  // Backward compatibility: merge with DEFAULT_ROUNDS so new keys get 0,
+  // and old keys (e.g. bodyweight) are silently ignored by calorie calc
+  return {
+    date: stored.date,
+    activities: { ...DEFAULT_ROUNDS, ...stored.activities },
+    freeCalories: stored.freeCalories ?? 0,
+  };
 }
 
 export function saveRecord(record: DayRecord) {
@@ -32,6 +42,13 @@ export function saveRecord(record: DayRecord) {
 export function updateActivity(date: string, activity: ActivityType, rounds: number) {
   const record = getRecord(date);
   record.activities[activity] = Math.max(0, rounds);
+  saveRecord(record);
+  return record;
+}
+
+export function updateFreeCalories(date: string, value: number) {
+  const record = getRecord(date);
+  record.freeCalories = Math.max(0, value);
   saveRecord(record);
   return record;
 }
