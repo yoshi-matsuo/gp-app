@@ -24,12 +24,12 @@ import {
 } from "@/lib/date-utils";
 import { DayRecord } from "@/lib/types";
 
-type TabKey = "week" | "month" | "year" | "total";
+type TabKey = "day" | "week" | "month" | "total";
 
 const TABS: { key: TabKey; label: string }[] = [
+  { key: "day", label: "日" },
   { key: "week", label: "週" },
   { key: "month", label: "月" },
-  { key: "year", label: "年" },
   { key: "total", label: "累計" },
 ];
 
@@ -126,7 +126,7 @@ function buildTotalData(records: DayRecord[]): { totalCalories: number; totalSte
 }
 
 export default function ReportPage() {
-  const [tab, setTab] = useState<TabKey>("week");
+  const [tab, setTab] = useState<TabKey>("day");
   const [records, setRecords] = useState<DayRecord[]>([]);
 
   useEffect(() => {
@@ -138,7 +138,7 @@ export default function ReportPage() {
   const yearData = useMemo(() => buildYearData(records), [records]);
   const totalData = useMemo(() => buildTotalData(records), [records]);
 
-  const chartData = tab === "week" ? weekData : tab === "month" ? monthData : yearData;
+  const chartData = tab === "day" ? weekData : tab === "week" ? monthData : yearData;
 
   return (
     <div className="min-h-screen bg-bg pb-20">
